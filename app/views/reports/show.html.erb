@@ -1,0 +1,48 @@
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "report" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+
+	<p>
+		<strong>제목:</strong>
+		<%= @report.title %>
+	</p>
+
+	<p>
+		<strong>신고 종류:</strong>
+		<%= @report.reason %>
+	</p>
+
+	<p>
+		<strong>신고내용:</strong>
+		<div class="bg-dark text-white text-left">
+			<%= @report.content.html_safe %>
+		</div>
+	</p>
+
+	<p>
+		<strong>해당 서버:</strong>
+		<%= @report.server.title %>
+	</p>
+
+	<p>
+		<strong>해당 플레이어:</strong>
+		<%= @report.player.name %>
+	</p>
+
+	<p>
+		<strong>신고유저:</strong>
+		<%= @report.user.username %>
+	</p>
+
+	<%= link_to '수정', edit_report_path(@report), class: "btn btn-lg btn-primary" %> |
+	<%= link_to '뒤로가기', reports_path, class: "btn btn-lg btn-secondary mb-3" %>
+
+</div>

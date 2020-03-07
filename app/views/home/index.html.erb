@@ -1,0 +1,15 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "home" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container-fluid">
+<%= render 'shared/main_countdown'%>
+<%= render 'shared/main_analytics' %>
+</div>
+
+<%= javascript_include_tag 'parallax.min' %>
+<%= stylesheet_link_tag 'index' %>
+

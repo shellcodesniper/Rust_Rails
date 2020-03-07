@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "report" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<h1>신고 내용 수정</h1>
+
+	<%= render 'form', report: @report %>
+
+	<br />
+
+	<%= link_to '뒤로가기', reports_path, class: "btn btn-lg btn-secondary mb-3" %>
+</div>

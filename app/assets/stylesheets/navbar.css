@@ -1,0 +1,47 @@
+body {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+	color: #5a5a5a;
+}
+
+
+/* FOR FOOTER! */
+
+.bg-dark {
+	background: #0e1015
+}
+
+section,
+footer {
+	padding: 96px 0;
+	position: relative;
+	overflow: hidden;
+}
+
+footer {
+	padding: 72px 0;
+	display: block;
+	font-size: 14px;
+	line-height: 24px;
+	font-family: raleway, halvetica neue, Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+}
+
+.footer input[type=submit] {
+	border: 0;
+	margin-top: 3px
+}
+
+.copyright-text {
+	color: #fff
+}
+
+.footer .footer-credits {
+	color: #fff
+}
+
+.footer .footer-credits a {
+	color: #fefefe;
+	opacity: .8
+}

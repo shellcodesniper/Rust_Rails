@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  steamid: MyString
+  vacban: false
+  gameban: false
+  familyshare: false
+  steamplaytime: 1
+  serverplaytime: 1
+  seasonplaytime: 1
+  connectip: MyString
+
+two:
+  name: MyString
+  steamid: MyString
+  vacban: false
+  gameban: false
+  familyshare: false
+  steamplaytime: 1
+  serverplaytime: 1
+  seasonplaytime: 1
+  connectip: MyString

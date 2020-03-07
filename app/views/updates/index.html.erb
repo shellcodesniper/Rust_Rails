@@ -1,0 +1,29 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "update" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<h1>Playrust.co.kr 연합 업데이트 목록</h1>
+	<br />
+
+	<% @updates.each do |update| %>
+		<div class="card text-center">
+			<div class="card-header">
+				공지사항 <%= update.created_at.strftime("%Y년 %m월 %d일") %> [<%= update.id %> 번째]
+			</div>
+			<div class="card-body">
+				<h5 class="card-title"><%= update.title %></h5>
+				<p class="card-text"><%= raw(update.content) %></p>
+			</div>
+			<div class="card-footer text-muted">
+				Made By. KuuwangE
+			</div>
+		</div>
+		<br />
+
+	<% end %>
+
+</div>

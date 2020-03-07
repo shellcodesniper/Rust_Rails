@@ -1,0 +1,77 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "notice" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<h1>Playrust.co.kr 연합 공지사항 목록</h1>
+	<br />
+
+	<div class="accordion" id="accordionExample">
+		<div class="card">
+			<div class="card-header" id="headingTwo">
+				<h2 class="mb-0">
+					<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+						data-target="#show_sticky_1" aria-expanded="false" aria-controls="show_sticky_1">
+						<h2>고정 공지사항 - 스팀 프로필 공개설정 방법 [클릭]</h2>
+					</button>
+				</h2>
+			</div>
+			<div id="show_sticky_1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				<div class="card-body">
+					<%= image_tag "public_instruction/public_instruction_1.png", class: 'img-fluid'%>
+					<br />&nbsp;
+					<%= image_tag "public_instruction/public_instruction_2.png", class: 'img-fluid'%>
+					<br />&nbsp;
+					<%= image_tag "public_instruction/public_instruction_3.png", class: 'img-fluid'%>
+					<br />&nbsp;
+					<%= image_tag "public_instruction/public_instruction_4.png", class: 'img-fluid'%>
+					<br />&nbsp;
+					<%= image_tag "public_instruction/public_instruction_5.png", class: 'img-fluid'%>
+					<br />&nbsp;
+				</div>
+			</div>
+		</div>
+		<!--<div class="card">
+			<div class="card-header" id="headingThree">
+				<h2 class="mb-0">
+					<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+						data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+						Collapsible Group Item #3
+					</button>
+				</h2>
+			</div>
+			<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+				<div class="card-body">
+					Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
+					wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+					eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
+					assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+					sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
+					farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
+					labore sustainable VHS.
+				</div>
+			</div>
+		</div>-->
+	</div>
+
+	<% @notices.reverse.each do |notice| %>
+	<div class="card text-center mt-5">
+		<div class="card-header">
+			공지사항 <%= notice.created_at.strftime("%Y년 %m월 %d일") %> [<%= notice.id %> 번째]
+		</div>
+		<div class="card-body">
+			<h5 class="card-title"><%= notice.title %></h5>
+			<p class="card-text"><%= raw(notice.content) %></p>
+		</div>
+		<div class="card-footer text-muted">
+			Made By. KuuwangE
+		</div>
+	</div>
+	<br />
+
+	<% end %>
+
+</div>

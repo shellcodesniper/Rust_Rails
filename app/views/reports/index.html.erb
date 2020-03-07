@@ -1,0 +1,44 @@
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "report" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+
+	<h1>신고 게시판</h1><br />
+	<h6>신고 처리 완료시 당사자에게 연락 후 삭제됩니다.</h6><br />
+
+
+	<% @reports.reverse.each do |report|%>
+		<div class="card gedf-card mt-3 ">
+			<div class="card-header">
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="mr-2">
+							<div class="h5 m-0">제목 : <%= report.title %></div>
+						</div>
+					</div>
+					<div class="h7 text-muted m-0">해당서버 : <%= report.server.title%></div>
+				</div>
+
+			</div>
+			<div class="card-body">
+				신고글은 비공개로 처리됩니다.
+			</div>
+			<div class="card-footer">
+				처리 결과는 관리자에 의해 신고자에게 통보됩니다.
+				<!-- <a href="/reports/<%=report.id.to_s%>">상세정보</a> -->
+				<%= if (user_signed_in? && current_user.id == report.user.id) then link_to '수정하기', edit_report_path(report), class: "btn btn-lg btn-primary" end %>
+			</div>
+		</div>
+
+	<% end %>
+	<br>
+	
+	<%= link_to '신고 글 작성하기', new_report_path, class: "btn btn-lg btn-secondary mb-3" %>
+</div>

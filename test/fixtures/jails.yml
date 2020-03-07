@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  title: MyString
+  targetid: MyString
+  reason: MyString
+  start_date: 2020-02-10 22:40:23
+  end_date: 2020-02-10 22:40:23
+  judger: MyString
+
+two:
+  type: 
+  title: MyString
+  targetid: MyString
+  reason: MyString
+  start_date: 2020-02-10 22:40:23
+  end_date: 2020-02-10 22:40:23
+  judger: MyString

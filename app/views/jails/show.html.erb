@@ -1,0 +1,50 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "jail" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<p id="notice"><%= notice %></p>
+		<strong>해당 서버:</strong>
+		<%= @jail.server %>
+	</p>
+
+	<p>
+		<strong>제재 종류 ( 디케 판단용 ) :</strong>
+		<%= @jail.jailtype %>
+	</p>
+
+	<p>
+		<strong>제재 내용:</strong>
+		<%= @jail.title %>
+	</p>
+
+	<p>
+		<strong>해당 플레이어:</strong>
+		<%= @jail.player.name %>
+	</p>
+
+	<p>
+		<strong>제재 이유:</strong>
+		<%= @jail.reason %>
+	</p>
+
+	<p>
+		<strong>제재 시작일:</strong>
+		<%= @jail.start_date %>
+	</p>
+
+	<p>
+		<strong>제재 종료일 [ 종료일에 자동 종료됩니다 ]:</strong>
+		<%= @jail.end_date %>
+	</p>
+
+	<p>
+		<strong>판단자:</strong>
+		<%= @jail.judger %>
+	</p>
+
+	<%= link_to '뒤로가기', jails_path %>
+</div>

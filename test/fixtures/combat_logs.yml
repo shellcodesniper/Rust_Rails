@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  player: one
+  time: 1
+  attacker: MyString
+  target: MyString
+  weapon: MyString
+  ammo: MyString
+  area: MyString
+  distance: MyString
+  old_hp: 1.5
+  new_hp: 1.5
+  info: MyString
+
+two:
+  player: two
+  time: 1
+  attacker: MyString
+  target: MyString
+  weapon: MyString
+  ammo: MyString
+  area: MyString
+  distance: MyString
+  old_hp: 1.5
+  new_hp: 1.5
+  info: MyString

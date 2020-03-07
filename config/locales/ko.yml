@@ -1,0 +1,4 @@
+ko:
+  date:
+    order: ["year", "month", "day"]
+    strftime_format: '%Y-%m-%d %H:%M:%S'

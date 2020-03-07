@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  rcon_host: MyString
+  rcon_port: 1
+  rcon_pass: MyString
+  memo: MyText
+
+two:
+  title: MyString
+  rcon_host: MyString
+  rcon_port: 1
+  rcon_pass: MyString
+  memo: MyText

@@ -1,0 +1,27 @@
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "report" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<% if user_signed_in? %>
+
+<div class="container">
+	<h1>신고글 작성</h1>
+
+	<%= render 'form', report: @report %>
+
+	<%= link_to '뒤로가기', reports_path, class: "btn btn-lg btn-secondary" %>
+
+</div>
+
+
+<% else %>
+<script type="text/javascript">
+	window.location.href="/users/sign_in"  // put your correct path in a string here
+</script>
+<%end%>

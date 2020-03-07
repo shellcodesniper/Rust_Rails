@@ -1,0 +1,43 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "server" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	
+	<h1>Servers</h1>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Rcon host</th>
+				<th>Rcon port</th>
+				<th>Rcon pass</th>
+				<th>Memo</th>
+				<th colspan="3"></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% @servers.each do |server| %>
+			<tr>
+				<td><%= server.title %></td>
+				<td><%= server.rcon_host %></td>
+				<td><%= server.rcon_port %></td>
+				<td><%= server.rcon_pass %></td>
+				<td><%= server.memo %></td>
+				<td><%= link_to 'Show', server %></td>
+				<td><%= link_to 'Edit', edit_server_path(server) %></td>
+				<td><%= link_to 'Destroy', server, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+
+	<br>
+
+	<%= link_to 'New Server', new_server_path %>
+</div>

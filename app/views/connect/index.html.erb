@@ -1,0 +1,24 @@
+
+<% if(params[:server] == "main") %>
+	<h1>접속시 게임 참가 버튼이 열립니다.</h1>
+	<script>
+		window.location.href = "steam://connect/shackers.net:28016";
+	</script>
+
+<% end %>
+
+<% if(params[:server] == "newbie") %>
+	<h1>접속시 게임 참가 버튼이 열립니다.</h1>
+	<script>
+		window.location.href = "steam://connect/shackers.net:28018";
+	</script>
+
+<% end %>
+
+<% if(params[:server] == "vanilla") %>
+	<h1>접속시 게임 참가 버튼이 열립니다.</h1>
+	<script>
+		window.location.href = "steam://connect/powerful.kuuwang.com:28020";
+	</script>
+
+<% end %>

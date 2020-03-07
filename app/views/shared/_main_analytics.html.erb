@@ -1,0 +1,325 @@
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js' %>
+<%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css'%>
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.26.0/feather.min.js' %>
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+
+
+
+<div class="container-fluid">
+
+	<main role="main" class="><div class=" chartjs-size-monitor"
+		style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+		<div class="chartjs-size-monitor-expand"
+			style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+			<div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+		</div>
+		<div class="chartjs-size-monitor-shrink"
+			style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+			<div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+		</div>
+</div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2">서버 동향 (당일 순방문객[누적 x])</h1>
+</div>
+
+<canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="3318" height="1400"
+	style="display: block; height: 700px; width: 1659px;"></canvas>
+
+
+<div class="mt-1 mb-1"><br /><br /></div>
+
+<h2>전체서버 랭킹 [특별 알고리즘]</h2>
+<div class="table-responsive">
+	<table id="serverRank" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th class="th-sm">랭킹</th>
+				<th class="th-sm">서버</th>
+				<th class="th-sm">닉네임</th>
+				<th class="th-sm">서버 플레이시간 점수</th>
+				<th class="th-sm">Kill</th>
+				<th class="th-sm">Death</th>
+				<th class="th-sm">한마디</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% index = 0%>
+			<% r = Array.new%>
+			<% u =  Rails.cache.fetch("rank_list", expires_in: 10.minutes) do %>
+				<% CombatLog.all.group(:attacker_id) %>
+			<% end %>
+
+			<%
+			u.each do |user| 
+				h = {
+					"name" => user.attacker.name,
+					"server" => user.attacker.server.title,
+					"playtime" => user.attacker.serverplaytime / 360,
+					"kill" => CombatLog.where(:attacker => user.attacker, :damage => 0).count, 
+					"death" => CombatLog.where(:player => user.attacker, :damage => 0).count, 
+					"score" => (user.attacker.serverplaytime / 360),
+					"comment" => '적용예정'
+					}
+				h["score"] = h["score"] + (h["kill"] * 10) - (h["death"] * 3)
+				r << h
+			end
+			r = r.sort_by { |hsh| hsh["score"] }
+
+
+			r.reverse.each do |user|
+			index += 1
+			%>
+			<tr>
+				<td><%=index.to_s.rjust(3, '0')%>등</td>
+				<td><%= user["server"] %></td>
+				<td><%= user["name"] %></td>
+				<td><%= user["playtime"] %></td>
+				<td><%= user["kill"] %></td>
+				<td><%= user["death"] %></td>
+				<td><%= user["comment"] %></td>
+			</tr>
+
+			<% end %>
+
+
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>랭킹</th>
+				<th>서버</th>
+				<th>닉네임</th>
+				<th>서버 플레이시간 점수</th>
+				<th>Kill</th>
+				<th>Death</th>
+				<th>한마디</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+
+<style>
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+bottom: .5em;
+}
+</style>
+
+<div class="mt-1 mb-1"><br /><br /></div>
+
+<h2>전체서버 컴뱃로그</h2>
+<div class="table-responsive">
+	<table id="killFeed" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th class="th-sm">서버</th>
+				<th class="th-sm">살인자</th>
+				<th class="th-sm">피살자</th>
+				<th class="th-sm">무기</th>
+				<th class="th-sm">데미지</th>
+				<th class="th-sm">거리</th>
+				<th class="th-sm">신고횟수</th>
+			</tr>
+		</thead>
+		<tbody버
+		
+			<% u =  Rails.cache.fetch("combat_list", expires_in: 10.minutes) do %>
+				<% CombatLog.last(20).reverse %>
+			<% end %>
+			<% u.each do |user| %>
+			
+			<tr>
+				<td><%= user.server.title %></td>
+				<td><%= user.attacker.name %></td>
+				<td><%= user.player.name %></td>
+				<td><%= user.weapon %></td>
+				<td><%= if user.damage.to_i == 0 then "사망" else user.damage end %></td>
+				<td><%= user.distance %></td>
+				<td>0</td>
+			</tr>
+
+			
+			<% end %>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>서버</th>
+				<th>살인자</th>
+				<th>피살자</th>
+				<th>무기</th>
+				<th>데미지</th>
+				<th>거리</th>
+				<th>신고횟수</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+
+
+</main>
+</div>
+</div>
+
+<script>
+$(document).ready(function () {
+$('#serverRank').DataTable({
+	 "lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+});
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
+<%# Server Rank %>
+
+<script>
+$(document).ready(function () {
+$('#killFeed').DataTable({
+	"lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+});
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
+<%# Kill Feed %>
+
+<%# Draw Chart %>
+<script>
+(function () {
+	'use strict'
+
+	feather.replace()
+
+	// Graphs
+	var ctx = document.getElementById('myChart')
+	// eslint-disable-next-line no-unused-vars
+	var myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: [
+				<% (0..14).to_a.reverse.each do |x| %>
+					<% pdate = (Time.zone.now - x.day)%>
+					<% date_str = pdate.strftime('%Y-%m-%d')%>
+					'<%=date_str%>'<%= if x > 0 then ',' end %>
+				<% end%>
+			],
+			datasets: [
+			{
+				label: '전체 접속자',
+				data: [
+					<% (0..14).to_a.reverse.each do |x| %>
+						<% pdate = (Time.zone.now - x.day)%>
+						<% start_date = pdate.beginning_of_day %>
+						<% end_date = pdate.end_of_day%>
+						<% value =  Rails.cache.fetch("total_player_#{x}", expires_in: 10.minutes) do %>
+							<% Player.where(updated_at: start_date..end_date).count %>
+						<% end %>
+						<%= value %><%= if x > 0 then ',' end %>
+					<% end%>
+				],
+				lineTension: 0,
+				backgroundColor: 'transparent',
+				borderColor: '#BA4A00',
+				borderWidth: 4,
+				pointBackgroundColor: '#BA4A00'
+			},
+			{
+				label: '디케에 의한 제재자',
+				data: [
+					<% (0..14).to_a.reverse.each do |x| %>
+						<% pdate = (Time.zone.now - x.day)%>
+						<% start_date = pdate.beginning_of_day %>
+						<% end_date = pdate.end_of_day%>
+						<% value =  Rails.cache.fetch("jail_#{x}", expires_in: 10.minutes) do %>
+							<% Jail.where(created_at: start_date..end_date).distinct.pluck(:player_id).count %>
+						<% end %>
+						<%= value %><%= if x > 0 then ',' end %>
+					<% end%>
+				],
+				lineTension: 0,
+				backgroundColor: 'transparent',
+				borderColor: '#2C3E50',
+				borderWidth: 4,
+				pointBackgroundColor: '#2C3E50'
+			},
+			{
+				label: 'Playrust.co.kr#와컴 접속자',
+				data: [
+					<% (0..14).to_a.reverse.each do |x| %>
+						<% pdate = (Time.zone.now - x.day)%>
+						<% start_date = pdate.beginning_of_day %>
+						<% end_date = pdate.end_of_day%>
+						<% value =  Rails.cache.fetch("player_wacom_#{x}", expires_in: 10.minutes) do %>
+							<% Player.where(server_id: 1, updated_at: start_date..end_date).count %>
+						<% end %>
+						<%= value %><%= if x > 0 then ',' end %>
+					<% end%>
+				],
+				lineTension: 0,
+				backgroundColor: 'transparent',
+				borderColor: '#5DADE2',
+				borderWidth: 4,
+				pointBackgroundColor: '#5DADE2'
+			},
+			{
+				label: 'Playrust.co.kr#뉴비 접속자',
+				data: [
+					<% (0..14).to_a.reverse.each do |x| %>
+						<% pdate = (Time.zone.now - x.day)%>
+						<% start_date = pdate.beginning_of_day %>
+						<% end_date = pdate.end_of_day%>
+						<% value =  Rails.cache.fetch("player_newbie_#{x}", expires_in: 10.minutes) do %>
+							<% Player.where(server_id: 2, updated_at: start_date..end_date).count %>
+						<% end %>
+						<%= value %><%= if x > 0 then ',' end %>
+					<% end%>
+				],
+				lineTension: 0,
+				backgroundColor: 'transparent',
+				borderColor: '#82E0AA',
+				borderWidth: 4,
+				pointBackgroundColor: '#82E0AA'
+			}
+			,
+			{
+				label: 'Playrust.co.kr#Vanilla 접속자',
+				data: [
+					<% (0..14).to_a.reverse.each do |x| %>
+						<% pdate = (Time.zone.now - x.day)%>
+						<% start_date = pdate.beginning_of_day %>
+						<% end_date = pdate.end_of_day%>
+						<% value =  Rails.cache.fetch("player_vanilla_#{x}", expires_in: 10.minutes) do %>
+							<% Player.where(server_id: 3, updated_at: start_date..end_date).count %>
+						<% end %>
+						<%= value %><%= if x > 0 then ',' end %>
+					<% end%>
+				],
+				lineTension: 0,
+				backgroundColor: 'transparent',
+				borderColor: '#48C9B0',
+				borderWidth: 4,
+				pointBackgroundColor: '#48C9B0'
+			}
+			]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: false
+					}
+				}]
+			},
+			legend: {
+				display: false
+			}
+		}
+	})
+}())
+</script>

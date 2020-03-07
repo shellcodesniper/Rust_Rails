@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time: 2020-02-15 01:40:03
+  player: one
+  message: MyText
+  server: one
+  memo: MyText
+
+two:
+  time: 2020-02-15 01:40:03
+  player: two
+  message: MyText
+  server: two
+  memo: MyText

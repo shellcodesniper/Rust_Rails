@@ -1,0 +1,14 @@
+mode: "exact"
+language: "ko_KR"
+schema: "html5-strict"
+element_format: "html"
+resize: true
+plugins:
+  - preview
+  - paste
+  - link
+# Each line is a toolbar
+toolbar:
+  - undo redo | link | paste | preview | bold italic underline strikethrough 
+
+paste_data_images: true

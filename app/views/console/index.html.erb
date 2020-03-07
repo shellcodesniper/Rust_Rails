@@ -1,0 +1,255 @@
+<%= stylesheet_link_tag '//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css'%>
+<%= javascript_include_tag '//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js'%>
+
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "console" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+
+
+<%
+	@cache_id = 1
+	if !params[:target].nil? and params[:target].to_i > 0 then 
+		@cache_id = params[:target].to_i
+		@server = Server.find(@cache_id)
+	else
+		@cache_id = 1
+		@server = Server.first
+	end
+%>
+
+<div class="container">
+	<div class="btn-toolbar mb-5" role="toolbar" aria-label="Toolbar with button groups">
+		<div class="btn-group mr-2" role="group" aria-label="서버 선택">
+			<% Server.all.each do |server|%>
+			<button type="button" onclick="target(<%= server.id %>)"
+				class="btn btn-secondary <%= if @cache_id == server.id then 'active' end %>"><%= server.title %></button>
+			<% end %>
+		</div>
+	</div>
+
+
+	<div class="jumbotron">
+		<h1 class="display-4">채팅로그 [스크롤 가능]</h1>
+		<p class="lead"></p>
+		<hr class="my-4">
+		<div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 300px;">
+
+			<% value =  Rails.cache.fetch("seelog_message_#{@cache_id}", expires_in: 1.minutes) do %>
+				<% puts @server %>
+				<% @messages.where(server: @server).order(created_at: :desc).first(1000)%>
+			<% end %>
+
+			<% value.each  do |message| %>
+			<p>
+				<%= if @cache_id == 0 then "[#{message.server.title}] " else "" end %><code>[<%= if message.time.to_s.include? '+' then message.time.to_s.split('+')[0].strip else '' end %>]</code>
+				<b>[<%= message.player.name %>]</b> : <%= message.message.strip %>
+			</p>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="jumbotron">
+		<h1 class="display-4">서버로그 [스크롤 가능]</h1>
+		<h5>(상단 - 최근, 하단 - 오래됨)</h5>
+		<p class="lead"></p>
+		<hr class="my-4">
+		<div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 300px;">
+
+			<% value =  Rails.cache.fetch("console_log_#{@cache_id}", expires_in: 1.minutes) do %>
+			<%
+				server = @server
+				ru = Rustutil.new(server.rcon_host, server.rcon_port, server.rcon_pass)
+				val = ru.Get_ConsoleLog
+			%>
+			<% end %>
+			<% JSON.parse(value["Message"]).reverse.each  do |message| %>
+			<p>
+				<%= message["Message"] %>
+			</p>
+			<% end %>
+		</div>
+
+		<h5 class="mt-5">서버 명령어실행</h5>
+		<div class="overflow-auto mt-1 p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 300px;">
+			<input type="text" style="width:100%" />
+		</div>
+	</div>
+
+
+
+	
+
+	<h1 class="mt-4">플레이어 목록</h1>
+	<div class="table-responsive mt-5">
+		<table id="Players" class="table table-stripped table-bordered" cellspacing="0" width="100%">
+			<thead class="thead-dark">
+				<th class="th-sm">id</th>
+				<th class="th-sm">닉네임</th>
+				<th class="th-sm">스팀pt</th>
+				<th class="th-sm">VAC밴</th>
+				<th class="th-sm">게임밴</th>
+				<th class="th-sm">가족공유</th>
+				<th class="th-sm">서버pt</th>
+				<th class="th-sm">연결ip</th>
+				<th class="th-sm">킥</th>
+				<th class="th-sm">밴</th>
+			</thead>
+
+			<tbody>
+				<% index = 0%>
+				<% Player.where(server: @server).each do |user| %>
+				<%
+				steamplaytime = user.steamplaytime
+				hour = (steamplaytime / 60).to_s.rjust(2, '0')
+				minute = (steamplaytime % 60).to_s.rjust(2, '0')
+				# second = (value % 60).to_s.rjust(2, '0')
+				if(steamplaytime == -1) then steamplaytime = "미인증유저" else steamplaytime = "#{hour}시#{minute}분" end
+
+				serverplaytime = user.serverplaytime
+				hour = (serverplaytime / 3600).to_s.rjust(2, '0')
+				minute = ((serverplaytime % 3600) / 60 ).to_s.rjust(2, '0')
+				serverplaytime = "#{hour}시#{minute}분"
+				%>
+
+				<tr>
+					<td><%=index.to_s.rjust(4, '0');index+=1%></td>
+					<td><%= user.name %></td>
+					<td><%= steamplaytime %></td>
+					<td><%= if user.vacban then raw('<span class="label label-danger">✓</span>') else raw('<span class="label label-success">✘</span>') end %></td>
+					<td><%= if user.gameban then raw('<span class="label label-danger">✓</span>') else raw('<span class="label label-success">✘</span>') end %></td>
+					<td><%= if user.familyshare then raw('<span class="label label-danger">✓</span>') else raw('<span class="label label-success">✘</span>') end %></td>
+					<td><%= serverplaytime %></td>
+					<td><%= user.connectip.to_s.split(':')[0].to_s.strip %></td>
+					<td class="text-center"><button class="btn btn-info">킥</button></td>
+					<td class="text-center"><button class="btn btn-danger">밴</button></td>
+
+				</tr>
+
+				<%end%>
+			</tbody>
+
+			<tfoot>
+				<th>id</th>
+				<th>닉네임</th>
+				<th>스팀pt</th>
+				<th>VAC밴</th>
+				<th>게임밴</th>
+				<th>가족공유</th>
+				<th>서버pt</th>
+				<th>연결ip</th>
+				<th>킥</th>
+				<th>밴</th>
+			</tfoot>
+		</table>
+	</div>
+
+	
+	<h1 class="mt-5">컴뱃 로그</h1>
+	<div class="table-responsive mt-5">
+			<table id="killFeed" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead class="thead-dark">
+					<tr>
+						<th class="th-sm">시간</th>
+						<th class="th-sm">살인자</th>
+						<th class="th-sm">피살자</th>
+						<th class="th-sm">무기</th>
+						<th class="th-sm">데미지</th>
+						<th class="th-sm">거리</th>
+						<th class="th-sm">신고</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% index = 0%>
+					
+					<% u =  Rails.cache.fetch("console_combat_#{@cache_id}", expires_in: 10.minutes) do %>
+						<% CombatLog.where(server: @server).order(created_at: :desc).first(1000) %>
+					<% end %>
+
+					<% puts u.nil? %>
+					<% if u != nil %>
+						<% u.each do |user| %>
+						
+						<tr>
+							<td><%= user.created_at.strftime("%y-%m-%d %H:%M:%S") %></td>
+							<td><%= user.attacker.name %></td>
+							<td><%= user.player.name %></td>
+							<td><%= user.weapon %></td>
+							<td><%= if user.damage.to_i == 0 then "사망" else user.damage end %></td>
+							<td><%= user.distance %></td>
+							<td>0</td>
+						</tr>
+
+					
+						<% end %>
+					<% end %>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>id</th>
+						<th>살인자</th>
+						<th>피살자</th>
+						<th>무기</th>
+						<th>데미지</th>
+						<th>거리</th>
+						<th>신고횟수</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+
+
+
+	표시해줄 항목들
+
+	벤로그 / 킥로그 
+	서버 콘솔창
+
+	서버 말하기
+	서버 콘솔 명령어 입력
+
+	
+	
+
+
+</div>
+
+<script>
+function target(id) {
+		document.location = '<%= console_index_url %>?target=' + id;
+	}
+$(document).ready(function () {
+	$('#killFeed').DataTable({
+		"lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+	});
+	$('#Players').DataTable({
+		"lengthMenu": [[25, 50, -1], [25, 50, "All"]]
+	});
+	$('.dataTables_length').addClass('bs-select');
+});
+</script>
+
+<style>
+	.label {
+		display: inline;
+		padding: .2em .6em .3em;
+		font-size: 75%;
+		font-weight: bold;
+		line-height: 1;
+		color: #fff;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: baseline;
+		border-radius:.25em
+	}
+	.label-success {
+		background-color:#5cb85c
+	}
+	.label-danger {
+		background-color:#d9534f
+	}
+	</style>

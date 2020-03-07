@@ -1,0 +1,98 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "signup" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+
+<div class="container">
+
+	<div class="accordion" id="accordionExample">
+		<div class="card">
+			<div class="card-header" id="headingTwo">
+				<h2 class="mb-0">
+					<button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+						data-target="#show_sticky_1" aria-expanded="true" aria-controls="show_sticky_1">
+						<h2>회원가입 안내 [클릭하여 닫고열기]</h2>
+					</button>
+				</h2>
+			</div>
+			<div id="show_sticky_1" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				<div class="card-body">
+					<h4 style="color:red">회원가입창은 제일 하단에 있습니다.</h4>
+					<h3 style="color:red">회원가입시 스팀ID 부분에는 숫자로 된 스팀 ID를 입력해야 합니다.</h3>
+					<h3 style="color:red" class="mb-4">아래 스크린샷을 따라 진행해주시기 바랍니다.</h3>
+
+					<%= image_tag "register_steamid/register_steamid_1.png", class: 'img-fluid'%> <br />&nbsp;
+					<%= image_tag "register_steamid/register_steamid_2.png", class: 'img-fluid'%> <br />&nbsp;
+					<br />&nbsp; <br />&nbsp;
+					<br />
+					<div class="row pt-5 pb-5" style="background-color: #aec6cf">
+    					<div class="col text-center">
+						<button
+							onclick="window.open('http:\/\/steamidfinder.com','window_name','width=480,height=600,location=no,status=no,scrollbars=yes');"
+							class="btn btn-danger btn-lg">SteamIdFinder 창 열기</button>
+						</div>
+					</div>
+					<h4 style="color:red" class="mt-4"> 위 버튼을 클릭하여 창을 열고 아래 내용을 진행해주세요 </h4>
+					<br />
+					<%= image_tag "register_steamid/register_steamid_3.png", class: 'img-fluid'%> <br />&nbsp;
+					<%= image_tag "register_steamid/register_steamid_4.png", class: 'img-fluid'%> <br />&nbsp;
+					<h4 style="color:red" class="mt-4 mb-5">Get SteamID 버튼을 클릭해줍니다</h4>
+					<%= image_tag "register_steamid/register_steamid_5.png", class: 'img-fluid'%> <br />&nbsp;
+					<%= image_tag "register_steamid/register_steamid_6.png", class: 'img-fluid'%> <br />&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+	<%= render "devise/shared/error_messages", resource: resource %>
+
+
+	<div class="field">
+		<%= f.label :username, '홈페이지 사용 닉네임' %><br />
+		<%= f.text_field :username, autofocus: true, autocomplete: "username" %>
+	</div>
+	<br />
+
+	<div class="field">
+		<%= f.label :realname, '스팀 닉네임' %><br />
+		<%= f.text_field :realname, autofocus: true, autocomplete: "realname" %>
+	</div>
+	<br />
+
+	<div class="field">
+		<%= f.label :steamid, '스팀ID' %><br />
+		<%= f.text_field :steamid, autofocus: true, autocomplete: "steamid" %>
+	</div>
+	<br />
+
+	<div class="field">
+		<%= f.label :email %><br />
+		<%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+	</div>
+
+	<div class="field">
+		<%= f.label :password %>
+		<% if @minimum_password_length %>
+		<em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+		<% end %><br />
+		<%= f.password_field :password, autocomplete: "new-password" %>
+	</div>
+
+	<div class="field">
+		<%= f.label :password_confirmation %><br />
+		<%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+	</div>
+
+	<div class="actions">
+		<%= f.submit t('.sign_up') %>
+	</div>
+	<% end %>
+
+	<%= render "devise/shared/links" %>
+
+</div>

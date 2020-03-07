@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job: MyString
+  next: 2020-02-13 14:15:27
+  memo: MyText
+
+two:
+  job: MyString
+  next: 2020-02-13 14:15:27
+  memo: MyText

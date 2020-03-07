@@ -1,0 +1,65 @@
+<%= stylesheet_link_tag 'navbar' %>
+
+<%# navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow %>
+
+<nav class="navbar navbar-expand-md navbar-dark p-0 fixed-top bg-dark">
+	<a class="navbar-brand" href="/">&nbsp;RUST Playrust.co.kr</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+		aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item <%= current=="home" ? "active" : "" %>">
+				<a class="nav-link" href="/">메인</a></li>
+			<li class="nav-item <%= current=="notice" ? "active" : "" %>">
+				<a class="nav-link" href="/notices">공지사항</a></li>
+			<li class="nav-item <%= current=="update" ? "active" : "" %>">
+				<a class="nav-link" href="/updates">업데이트</a></li>
+			<li class="nav-item <%= current=="seelog" ? "active" : "" %>">
+				<a class="nav-link" href="/seelog">서버로그</a></li>
+
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="board-dropdown" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false">게시판</a>
+				<div class="dropdown-menu" aria-labelledby="board-dropdown">
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item <%= current=="jail" ? "active" : "" %>" href="/jails">제재 내역</a>
+					<a class="dropdown-item <%= current=="report" ? "active" : ""  %>" href="/reports">신고 게시판</a>
+
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">질문 게시판</a>
+
+				</div>
+			</li>
+		</ul>
+
+
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="board-dropdown" data-toggle="dropdown"
+					aria-haspopup="true"
+					aria-expanded="false"><%= if user_signed_in? then current_user.email else "로그인시 활성화" end %></a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="board-dropdown">
+					<% if user_signed_in? %>
+					
+					<% if current_user.admin == true %>
+					
+					<%= link_to '서버 통합 관리 페이지', '/console', class: 'dropdown-item' %>
+					<%= link_to '관리자 페이지', '/admin', class: 'dropdown-item' %>
+					<div class="dropdown-divider"></div>
+					<% end %>
+					<%= link_to "회원정보", edit_user_registration_path, class: 'dropdown-item' %>
+					<%= link_to "로그아웃", destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
+
+					<% else %>
+					<%= link_to "로그인", user_session_path, class: 'dropdown-item' %>
+					<%= link_to "회원가입", "/users/sign_up", class: 'dropdown-item' %>
+					<% end %>
+
+				</div>
+			</li>
+		</ul>
+
+	</div>
+</nav>

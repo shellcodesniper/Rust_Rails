@@ -1,0 +1,204 @@
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js' %>
+
+<div class="py-1">
+	<div class="row">
+		<div class="col-lg-4 mx-auto">
+			<!-- Countdown 와컴-->
+			<div class="rounded bg-gradient-1 text-white shadow p-5 text-center mb-5">
+				<p class="mb-4 font-weight-bold text-uppercase">Playrust.co.kr#와컴 초기화</p>
+				<div id="clock-1" class="countdown-circles d-flex flex-wrap justify-content-center pt-4"></div>
+			</div>
+		</div>
+		<div class="col-lg-4 mx-auto">
+
+			<!-- Countdown 뉴비-->
+			<div class="rounded bg-gradient-2 text-white shadow p-5 text-center mb-5">
+				<p class="mb-4 font-weight-bold text-uppercase">Playrust.co.kr#뉴비 초기화</p>
+				<div id="clock-2" class="countdown-circles d-flex flex-wrap justify-content-center pt-4"></div>
+			</div>
+		</div>
+		<div class="col-lg-4 mx-auto">
+
+			<!-- Countdown Vanilla-->
+			<div class="rounded bg-gradient-3 text-white shadow p-5 text-center mb-5">
+				<p class="mb-4 font-weight-bold text-uppercase">Playrust.co.kr#Vanilla 초기화</p>
+				<div id="clock-3" class="countdown-circles d-flex flex-wrap justify-content-center pt-4"></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<style>
+.countdown {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.countdown span {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 3rem;
+    margin-left: 0.8rem;
+}
+
+.countdown span:first-of-type {
+    margin-left: 0;
+}
+
+.countdown-circles {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.countdown-circles span {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-circles span:first-of-type {
+    margin-left: 0;
+}
+
+
+/*
+*
+* ==================================================
+* FOR DEMO PURPOSES
+* ==================================================
+*
+*/
+body {
+    min-height: 100vh;
+}
+
+.bg-gradient-1 {
+	background: rgb(0,88,231);
+	background: linear-gradient(90deg, rgba(0,88,231,1) 0%, rgba(62,207,255,0.9094012605042017) 100%);
+    
+}
+
+.bg-gradient-2 {
+    background: rgb(145,0,231);
+	background: linear-gradient(90deg, rgba(145,0,231,1) 0%, rgba(242,209,255,1) 100%);
+}
+
+.bg-gradient-3 {
+    background: rgb(231,0,115);
+	background: linear-gradient(90deg, rgba(231,0,115,1) 0%, rgba(255,206,243,1) 100%);
+}
+
+.rounded {
+    border-radius: 1rem !important;
+}
+
+.btn-demo {
+    padding: 0.5rem 2rem !important;
+    border-radius: 30rem !important;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold !important;
+}
+
+.btn-demo:hover, .btn-demo:focus {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.5);
+}
+</style>
+
+<%
+server_reset_counter_0 =  Rails.cache.fetch("Main_Rest_0", expires_in: 10.minutes) do
+	server = Server.where(title: "Playrust.co.kr#와컴").first
+	if server.start_date == nil
+		base = ''
+	else
+		base = server.start_date.strftime('%Y-%m-%d %H:%M:%S')
+	end
+	base
+end
+
+server_reset_counter_1 =  Rails.cache.fetch("Main_Rest_1", expires_in: 10.minutes) do
+	server = Server.where(title: "Playrust.co.kr#뉴비").first
+	if server.start_date == nil
+		base = ''
+	else
+		base = server.start_date.strftime('%Y-%m-%d %H:%M:%S')
+	end
+	base
+end
+
+server_reset_counter_2 =  Rails.cache.fetch("Main_Rest_2", expires_in: 10.minutes) do
+	server = Server.where(title: "Playrust.co.kr#Vanilla").first
+	if server.start_date == nil
+		base = ''
+	else
+		base = server.start_date.strftime('%Y-%m-%d %H:%M:%S')
+	end
+	base
+end
+%>
+<script type="text/javascript">
+$(function () {
+
+    $('#clock-1').countdown('<%=server_reset_counter_0%>').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%D</span> 일%!d</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%H</span> 시간</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%M</span> 분</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%S</span> 초</div>'));
+    });
+
+	$('#clock-2').countdown('<%=server_reset_counter_1%>').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%D</span> 일%!d</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%H</span> 시간</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%M</span> 분</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%S</span> 초</div>'));
+    });
+
+	$('#clock-3').countdown('<%=server_reset_counter_2%>').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%D</span> 일%!d</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%H</span> 시간</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%M</span> 분</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%S</span> 초</div>'));
+    });
+
+
+    /* =========================================
+        COUNTDOWN 4
+     ========================================= */
+    function get15dayFromNow() {
+        return new Date(new Date().valueOf() + 15 * 24 * 60 * 60 * 1000);
+    }
+
+    $('#clock-c').countdown(get15dayFromNow(), function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<span class="h1 font-weight-bold">%D</span> Day%!d'
+        + '<span class="h1 font-weight-bold">%H</span> Hr'
+        + '<span class="h1 font-weight-bold">%M</span> Min'
+        + '<span class="h1 font-weight-bold">%S</span> Sec'));
+    });
+
+    /* =========================================
+        CALL TO ACTIONS FOR COUNTDOWN 4
+     ========================================= */
+    $('#btn-reset').click(function() {
+        $('#clock-c').countdown(get15dayFromNow());
+    });
+    $('#btn-pause').click(function() {
+        $('#clock-c').countdown('pause');
+    });
+    $('#btn-resume').click(function() {
+        $('#clock-c').countdown('resume');
+    });
+
+});
+
+</script>

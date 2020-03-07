@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Playrust.co.kr#연합 홈페이지 입니다.</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+	<!-- Analytics -->
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158941633-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-158941633-1');
+	</script>
+
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+	<%= javascript_include_tag 'https://kit.fontawesome.com/4c79617c70.js', crossorigin: 'anonymous', media: 'all' %>
+  </head>
+
+  <body>
+	<div id="nav-content">
+		<%= yield :side_bar %>
+	</div>
+
+	<!-- Confirmations Alert -->
+	<div class="container">
+		<% if alert != nil || notice != nil %>
+			<div id="alert-box" class="alert alert-info show" style="margin-top:20px" role="alert">
+				<%= alert %>
+				<%= notice %>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		<% end %>
+	</div>
+	
+	<div id="main-content">
+    	<%= yield %>
+	</div>
+	
+	<div id="footer-content">
+		<%= yield :footer %>
+	</div>
+  </body>
+</html>

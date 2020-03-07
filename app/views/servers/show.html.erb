@@ -1,0 +1,37 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "jail" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">>>
+
+	<p>
+		<strong>Title:</strong>
+		<%= @server.title %>
+	</p>
+
+	<p>
+		<strong>Rcon host:</strong>
+		<%= @server.rcon_host %>
+	</p>
+
+	<p>
+		<strong>Rcon port:</strong>
+		<%= @server.rcon_port %>
+	</p>
+
+	<p>
+		<strong>Rcon pass:</strong>
+		<%= @server.rcon_pass %>
+	</p>
+
+	<p>
+		<strong>Memo:</strong>
+		<%= @server.memo %>
+	</p>
+
+	<%= link_to 'Edit', edit_server_path(@server) %> |
+	<%= link_to 'Back', servers_path %>
+</div>

@@ -1,0 +1,22 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "update" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<p>
+	<strong>Title:</strong>
+	<%= @update.title %>
+	</p>
+
+	<p>
+	<strong>Content:</strong>
+	<%= @update.content %>
+	</p>
+
+	<%= link_to 'Edit', edit_update_path(@update) %> |
+	<%= link_to 'Back', updates_path %>
+
+</div>

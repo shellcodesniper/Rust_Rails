@@ -1,0 +1,56 @@
+<%= form_with(model: jail, local: true) do |form| %>
+  <% if jail.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(jail.errors.count, "error") %> prohibited this jail from being saved:</h2>
+
+      <ul>
+      <% jail.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :server %>
+    <%= form.text_field :server %>
+  </div>
+  <div class="field">
+    <%= form.label :jailtype %>
+    <%= form.text_field :jailtype %>
+  </div>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :player %>
+    <%= form.select :player, options_for_select(Player.all.map{|s|[s.name, s.id]}%>
+  </div>
+
+  <div class="field">
+    <%= form.label :reason %>
+    <%= form.text_field :reason %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.datetime_select :start_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_date %>
+    <%= form.datetime_select :end_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :judger %>
+    <%= form.text_field :judger %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

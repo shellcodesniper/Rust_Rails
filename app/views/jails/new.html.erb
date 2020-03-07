@@ -1,0 +1,14 @@
+<% content_for(:side_bar) do %>
+<%= render 'shared/navbar', :current => "jail" %>
+<% end %>
+<% content_for(:footer) do %>
+<%= render 'shared/footer' %>
+<% end %>
+
+<div class="container">
+	<h1>New Jail</h1>
+
+	<%= render 'form', jail: @jail %>
+
+	<%= link_to 'Back', jails_path %>
+</div>
